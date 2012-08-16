@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Mvc</title>
+
+
+    <link href="/lib/stylesheets/bootstrap/bootstrap.css" media="screen" rel="stylesheet" type="text/css"/>
+    <link href="/stylesheets/mvc-tutorial.css" media="screen" rel="stylesheet" type="text/css"/>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="lib/javascripts/bootstrap.js" type="text/javascript"></script>
+    <script type='text/javascript'
+            src="https://github.com/downloads/wycats/handlebars.js/handlebars-1.0.0.beta.6.js"></script>
+    <script src="lib/javascripts/ember-latest.js" type='text/javascript' ></script>
+
+    <script src="javascripts/ember-src.js" type="text/javascript"></script>
+
+</head>
+<body>
+
+<script type="text/x-handlebars" data-template-name="application">
+
+    <div class="container">
+        <div class="row">
+            <div class="span3 header">
+                Search
+            </div>
+            <div class="span8 header">
+                Product Detail
+            </div>
+        </div>
+        <div class="row">
+            <div class="span3 beer-list">
+                <div id="beer-filter"></div>
+                <div id="beer-list">
+                    {{view App.BeerListView controllerBinding="controller.controllers.beerListController"}}
+                </div>
+            </div>
+            <div class="span8 beer-detail">
+                {{ outlet }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="span3 header">
+                Favorites List
+            </div>
+        </div>
+        <div class="row ">
+            <div class="span3 favorites-list" id="favorites-list">
+                <ul>
+                    {{#each beer in controller.controllers.favoritesListController}}
+                    <li><a {{action goToBeerDetail beer href=true}}>{{beer.name}}</a>
+                        <button
+                        {{action deleteFromFavorites beer }} class="close">&times;</button></li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="beer-list-view">
+    Filter:{{view App.FilterTextField}}
+    <ul>
+        {{#each beer in content}}
+        <li><a {{action goToBeerDetail beer href=true}}>{{beer.name}}</a></li>
+        {{/each}}
+    </ul>
+</script>
+
+<script type="text/x-handlebars" data-template-name="beer-detail-view">
+    <div class="detail" id="beer-detail">
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <div class="info-item"><span class="title">Name:</span> {{ content.name }}</div>
+                    </br>
+                    <div class="info-item"><span class="title">Country:</span> {{ content.country }}</div>
+                    </br>
+                    <div class="info-item"><span class="title">Description:</span> {{ content.description }}</div>
+                    </br>
+                    <div class="info-item"><span class="title">Alcohol/Vol:</span>{{ content.alcohol }}%</div>
+                    </br>
+                </td>
+                <td>
+                    <img {{bindAttr src="content.url"}} />
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button
+        {{action addToFavorites context="content"}} class="btn" id="addToFavoritesBtn">Add to Favorites</button>
+    </div>
+</script>
+
+
+</body>
+</html>

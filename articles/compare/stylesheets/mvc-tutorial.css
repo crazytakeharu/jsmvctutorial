@@ -1,0 +1,58 @@
+#tutorial-content .label {
+    margin-right: 4px;
+}
+
+.filter-input {
+    width: 100px;
+    margin: 5px;
+}
+
+.header {
+    background-color: #EFF3EB;
+    margin-bottom: 20px;
+    margin-top: 30px;
+    padding: 5px;
+}
+
+.beer-list {
+    border: 1px solid #DBDDD8;
+    padding: 5px;
+    height: 260px;
+}
+
+.beer-list li {
+    list-style: outside none;
+}
+
+.favorites-list {
+
+    border: 1px solid #DBDDD8;
+    padding: 5px;
+    height: 100px;
+}
+
+.favorites-list li {
+    list-style: outside none;
+    border: 1px solid #DBDDD8;
+    padding: 5px;
+    height: 100px;
+}
+
+.beer-detail {
+    border: 1px solid #DBDDD8;
+    padding: 5px;
+    height: 260px;
+    font-size: 16px;
+}
+
+.beer-detail .title {
+    font-weight: bold;
+}
+
+.beer-detail .info-item {
+    margin-top: 5px;
+}
+
+.beer-detail .detail {
+    padding: 20px;
+}
