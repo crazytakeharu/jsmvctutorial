@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Mvc</title>
+
+    <link href="/lib/stylesheets/bootstrap/bootstrap.css" media="screen" rel="stylesheet" type="text/css"/>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="/lib/javascripts/bootstrap.js" type="text/javascript"></script>
+    <style>
+        .table {
+            width: 400px;
+        }
+
+        input {
+            width: 90px;
+        }
+    </style>
+</head>
+<body>
+
+<table class="table" id="userTable">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody id="peopleTableBody">
+    </tbody>
+</table>
+Name:<input type="text" name="name" id="name"/>
+Address: <input type="text" name="addr" id="addr"/>
+<button class="btn btn-success" type="button" onclick="addPerson();">Add New</button>
+
+
+<script type="text/javascript">
+
+    // preload all people data up front.
+    $.getJSON('/people/show', function(data) {
+        var tbody = $('#peopleTableBody');
+
+        $.each(data, function(key, val) {
+            var str = '<tr id="' + val.id + '" >';
+            str = str + '<td>'
+                    + val.name
+                    + '</td>' + '<td>'
+                    + val.address
+                    + '</td><td><button onclick="removeFromList(this);" class="btn btn-danger" type="button">Delete</button></td>';
+            str = str + '</tr>'
+            tbody.append(str);
+        });
+    });
+
+    function addPerson() {
+
+        // send request to create new person
+        $.ajax({
+            type: "POST",
+            url: '/people',
+            beforeSend: function(x) {
+                if (x && x.overrideMimeType) {
+                    x.overrideMimeType("application/j-son;charset=UTF-8");
+                }
+            },
+            dataType: "json",
+            data: { "name": $('#name').val(), "address" : $('#addr').val() },
+            success: function(data) {
+
+                // on success, append the person to the table. Remember, each row needs a id, whose value is the
+                // database id of the person
+                var name = $('#name').val();
+                var addr = $('#addr').val();
+                var str = '<tr class="someClass" id="' + data.id + '"><td>'
+                        + name
+                        + '</td><td>'
+                        + addr
+                        + '</td>'
+                        + '<td><button onclick="removeFromList(this);" class="btn btn-danger" type="button">'
+                        + 'Delete</button></td>'
+                        + '</tr>';
+                $('#userTable').append(str);
+            }
+        });
+    }
+
+
+    function removeFromList(ele) {
+        var idx = $(ele).closest('tr').attr('id')
+
+        // delete it
+        $(ele).parent().parent().remove();
+        $.ajax({
+            url: "/people/" + idx,
+            type:"DELETE",
+            context: document.body
+        });
+    }
+</script>
+
+
+</body>
+</html>
